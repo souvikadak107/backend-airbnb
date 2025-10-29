@@ -51,7 +51,6 @@ exports.getEditHomes=(req, res, next)=>{
       res.redirect("/homes");
     }
     else{
-      
       res.render("host/edit-home", {
         home:home,
         pageTitle: "edit Details",
@@ -59,4 +58,28 @@ exports.getEditHomes=(req, res, next)=>{
       })
     }
   })
+}
+
+
+exports.postEditHomes=(req, res, next)=>{
+  const homeId = req.params.homeid;
+
+  
+  const updatedFields = {
+    houseName: req.body.houseName,
+    price: req.body.price,
+    location: req.body.location,
+    rating: req.body.rating,
+    
+    description: req.body.description,
+    photoUrl: req.body.photoUrl
+  };
+
+  Home.updateHome(homeId, updatedFields, (err) => {
+    if (err) {
+      console.log("Error updating:", err);
+      return res.status(500).send("Could not update home");
+    }
+    res.redirect("/host/host-home-list");
+  });
 }

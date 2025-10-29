@@ -55,6 +55,36 @@ module.exports = class Home {
     })
   }
 
+  
+  static updateHome(homeId, updatedData, callback) {
+    Home.fetchAll((homes) => {
+      const idx = homes.findIndex((home) => home.id == homeId);
+
+      if (idx === -1) {
+        
+        return callback("home not found");
+      }
+
+      
+      homes[idx].houseName = updatedData.houseName ?? homes[idx].houseName;
+      homes[idx].price = updatedData.price ?? homes[idx].price;
+      homes[idx].location = updatedData.location ?? homes[idx].location;
+      homes[idx].rating = updatedData.rating ?? homes[idx].rating;
+      homes[idx].photoUrl = updatedData.photoUrl ?? homes[idx].photoUrl;
+      homes[idx].description = updatedData.description ?? homes[idx].description;
+
+      fs.writeFile(
+        homeDataPath,
+        JSON.stringify(homes, null, 2),
+        (err) => {
+          if (err) {
+            return callback("write fail");
+          }
+          callback(null); // success
+        }
+      );
+    });
+  }
 
 
 
