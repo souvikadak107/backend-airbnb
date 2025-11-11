@@ -4,7 +4,7 @@
       <%- include('../partials/nav') %>
       <main class="container mx-auto bg-white shadow-lg rounded-lg p-8 mt-10 max-w-6xl">
           <h2 class="text-3xl text-red-500 font-bold text-center mb-6">
-              Details of <%= home.name %>
+              Details of <%= home.houseName %>
           </h2>
           
           <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
@@ -34,8 +34,10 @@
                           <span class="text-yellow-400 text-xl">★</span>
                           <span class="ml-2 text-lg"><%= home.rating %> / 5</span>
                       </div>
-                  </div class="mt-5">
-                  <%- include('../partials/favourites',{home:home}) %>
+                  </div>
+                  <div class="mt-2">
+                    <%- include('../partials/favourite') %>
+                  </div>
               </div>
           </div>
       </main>

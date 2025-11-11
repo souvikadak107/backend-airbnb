@@ -6,7 +6,7 @@
     "test": "echo \"Error: no test specified\" && exit 1",
     "build:css": "tailwindcss -i ./views/input.css -o ./public/output.css",
     "dev": "npm run build:css && nodemon app.js",
-    "start": "npm run build:css && node app.js"
+    "start": "npm run build:css && nodemon app.js"
   },
   "keywords": [],
   "author": "",
@@ -21,6 +21,8 @@
   "dependencies": {
     "body-parser": "^1.20.3",
     "ejs": "^3.1.10",
-    "express": "^4.21.0"
+    "express": "^4.21.0",
+    "mongodb": "^6.10.0",
+    "mysql2": "^3.11.4"
   }
 }

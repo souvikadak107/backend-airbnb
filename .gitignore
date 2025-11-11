@@ -64,3 +64,6 @@ build/Release
 
 # Misc
 dump.rdb
+node_modules/
+.env
+.DS_Store
