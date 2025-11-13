@@ -1,7 +1,7 @@
 const Home = require("../models/home");
 
 exports.getAddHome = (req, res, next) => {
-  res.render("host/edit-home", {
+  res.render("host/addHome", {
     pageTitle: "Add Home to airbnb",
     currentPage: "addHome",
     editing: false,
@@ -49,8 +49,11 @@ exports.postAddHome = (req, res, next) => {
 };
 
 exports.postEditHome = (req, res, next) => {
-  const { id, houseName, price, location, rating, photoUrl, description } = req.body;
-  const home = new Home(houseName, price, location, rating, photoUrl, description, id);
+  const temp= req.params.homeId;
+  console.log(req.method);
+  
+  const { _id, houseName, price, location, rating, photoUrl, description } = req.body;
+  const home = new Home(houseName, price, location, rating, photoUrl, description, _id);
   home.save().then(result => {
     console.log('Home updated ', result);
   });
