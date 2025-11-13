@@ -21,7 +21,7 @@ app.set('view engine', 'ejs');
 app.set('views', 'views');
 
 // Middleware
-app.use(express.urlencoded());
+app.use(express.urlencoded({ extended: true }));
 app.use(express.static(path.join(rootDir, 'public')));
 
 // Routes
@@ -32,7 +32,7 @@ app.use("/host", hostRouter);
 app.use(errorsController.pageNotFound);
 
 // Port setup
-const PORT = process.env.PORT || 3000;
+const PORT = process.env.PORT;
 
 // Start server after MongoDB connects
 mongoConnect(() => {
