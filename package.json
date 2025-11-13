@@ -5,7 +5,6 @@
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "build:css": "tailwindcss -i ./views/input.css -o ./public/output.css",
-    "dev": "npm run build:css && nodemon app.js",
     "start": "npm run build:css && nodemon app.js"
   },
   "keywords": [],
