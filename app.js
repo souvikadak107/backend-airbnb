@@ -32,7 +32,7 @@ app.use("/host", hostRouter);
 app.use(errorsController.pageNotFound);
 
 // Port setup
-const PORT = process.env.PORT;
+const PORT = process.env.PORT || 3000;
 
 // Start server after MongoDB connects
 mongoConnect(() => {
