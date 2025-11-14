@@ -29,7 +29,7 @@ exports.getEditHome = (req, res, next) => {
 };
 
 exports.getHostHomes = (req, res, next) => {
-  Home.fetchAll().then(registeredHomes => {
+  Home.find().then(registeredHomes => {
     res.render("host/host-home-list", {
       registeredHomes: registeredHomes,
       pageTitle: "Host Homes List",
@@ -40,30 +40,50 @@ exports.getHostHomes = (req, res, next) => {
 
 exports.postAddHome = (req, res, next) => {
   const { houseName, price, location, rating, photoUrl, description } = req.body;
-  const home = new Home(houseName, price, location, rating, photoUrl, description);
+  const home = new Home({houseName, price, location, rating, photoUrl, description});
   home.save().then(() => {
     console.log('Home Saved successfully');
+    res.redirect("/host/host-home-list");
   });
 
-  res.redirect("/host/host-home-list");
+  
 };
 
 exports.postEditHome = (req, res, next) => {
-  const temp= req.params.homeId;
-  console.log(req.method);
+  //const temp= req.params.homeId;
+  //console.log(req.method);
   
   const { _id, houseName, price, location, rating, photoUrl, description } = req.body;
-  const home = new Home(houseName, price, location, rating, photoUrl, description, _id);
-  home.save().then(result => {
-    console.log('Home updated ', result);
-  });
-  res.redirect("/host/host-home-list");
+
+  Home.findById(_id).then((home)=>{
+    home.houseName=houseName;
+    home.price=price;
+    home.location=location;
+    home.rating=rating;
+    home.photoUrl=photoUrl;
+    home.description=description;
+
+    home.save().then(result => {
+      console.log('Home updated ', result);
+    })
+    .catch( err=>{
+      console.log("error while editing home", err);
+    })
+    res.redirect("/host/host-home-list");
+
+  })
+  .catch(err=>{
+    console.log("error while finding home", err);
+    
+  })
+
+  
 };
 
 exports.postDeleteHome = (req, res, next) => {
   const homeId = req.params.homeId;
   console.log('Came to delete ', homeId);
-  Home.deleteById(homeId).then(() => {
+  Home.findByIdAndDelete(homeId).then(() => {
     res.redirect("/host/host-home-list");
   }).catch(error => {
     console.log('Error while deleting ', error);

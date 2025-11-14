@@ -1,4 +1,23 @@
-const { getDB } = require("../utils/databaseUtil");
+
+const mongoose= require('mongoose');
+//const home = require('./home');
+
+const favouriteSchema= mongoose.Schema({
+  houseId:{
+    type: mongoose.Schema.Types.ObjectId,
+    ref: 'Home',
+    required: true,
+    unique: true
+  }
+});
+
+
+module.exports = mongoose.model('favourites', favouriteSchema);
+
+
+
+
+/** 
 
 module.exports = class Favourite {
   constructor(houseId) {
@@ -25,3 +44,4 @@ module.exports = class Favourite {
     return db.collection('favourites').deleteOne({houseId: delHomeId});
   }
 };
+*/

@@ -12,7 +12,8 @@ const storeRouter = require("./routes/storeRouter");
 const hostRouter = require("./routes/hostRouter");
 const rootDir = require("./utils/pathUtil");
 const errorsController = require("./controllers/errors");
-const { mongoConnect } = require('./utils/databaseUtil');
+
+const { default: mongoose } = require('mongoose');
 
 const app = express();
 
@@ -39,9 +40,14 @@ app.use(errorsController.pageNotFound);
 // Port setup
 const PORT = process.env.PORT || 4000;
 
-// Start server after MongoDB connects
-mongoConnect(() => {
-  app.listen(PORT, () => {
-    console.log(` Server running on: http://localhost:${PORT}`);
-  });
-});
+
+
+mongoose.connect(process.env.MONGO_URI).then(()=>{
+  console.log("connected to mongoose");
+    app.listen(PORT, () => {
+      console.log(` Server running on: http://localhost:${PORT}`);
+    });
+  })
+  .catch((err)=>{
+    console.error(" MongoDB Connection Error:", err);
+  })
