@@ -10,13 +10,15 @@ exports.getLogin = (req, res, next) => {
 };
 
 exports.postLogin = (req, res, next) => {
-  console.log(req.body);
-  //res.cookie("isLoggedIn", true);
-  //req.isLoggedIn = true;
-
-  req.session.isLoggedIn=true;
-  res.redirect("/");
+  req.session.isLoggedIn = true;
+  req.session.save(err => {
+    if (err) {
+      console.log('Session save error:', err);
+    }
+    res.redirect("/");
+  });
 };
+
 
 exports.postLogout= (req, res, next)=>{
   req.session.destroy(()=>{

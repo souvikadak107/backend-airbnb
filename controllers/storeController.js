@@ -6,7 +6,7 @@ const Home = require("../models/home");
 exports.getIndex = (req, res, next) => {
 
   //  to check the session value->
-    console.log('Session value', req.session);
+   // console.log('Session value', req.session);
     
 
 
