@@ -47,20 +47,28 @@
       <% } %>  
 
       
-      <li>
+      
         <% if(!isLoggedIn){ %>
-        <a
-          href="/login"
-          class="<%= currentPage === 'login' ? 'bg-red-400' : 'hover:bg-red-400' %> py-2 px-4 rounded transition duration-300"
-          >Login
-          </a>
-          <% } else { %>
-              <form action="/logout" method="POST">
-                <button type="submit",
-                class="'bg-red-400' : 'hover:bg-red-400' %> py-2 px-4 rounded transition duration-300"
-                >Logout</button>
-              </form>
-          <% } %>
+              <li>
+                <a
+                href="/signup"
+                class="<%= currentPage === 'signup' ? 'bg-red-400' : 'hover:bg-red-400' %> py-2 px-4 rounded transition duration-300"
+                >Signup</a>
+              </li>
+              <li>
+                <a
+                href="/login"
+                class="<%= currentPage === 'login' ? 'bg-red-400' : 'hover:bg-red-400' %> py-2 px-4 rounded transition duration-300"
+                >Login
+                </a>
+              </li>
+                <% } else { %>
+                    <form action="/logout" method="POST">
+                      <button type="submit",
+                      class="'bg-red-400' : 'hover:bg-red-400' %> py-2 px-4 rounded transition duration-300"
+                      >Logout</button>
+                    </form>
+                <% } %>
       </li>
     </ul>
   </nav>
