@@ -12,13 +12,13 @@ const homeSchema= mongoose.Schema({
 })
 
 
-homeSchema.pre('findOneAndDelete', async function(next){
-  console.log("came to pre hook while deleteing a home");
-  const homeId= this.getQuery()._id;
-  const Favourite = mongoose.model('favourites');
-  await Favourite.deleteMany({houseId: homeId});
-  next();
-})
+// homeSchema.pre('findOneAndDelete', async function(next){
+//   console.log("came to pre hook while deleteing a home");
+//   const homeId= this.getQuery()._id;
+//   const Favourite = mongoose.model('favourites');
+//   await Favourite.deleteMany({houseId: homeId});
+//   next();
+// })
 
 
 

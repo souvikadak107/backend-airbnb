@@ -42,8 +42,11 @@ app.use(express.urlencoded());
 app.use(session({
     secret:"james107",
     resave: false,
-    saveUninitialized: true,
-    store: store
+    saveUninitialized: false,
+    store: store,
+    cookie: {
+      maxAge: 1000 * 60 * 30
+    }
 }));
 
 

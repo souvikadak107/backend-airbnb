@@ -1,21 +1,19 @@
-const favourite = require("../models/favourite");
-const Favourite = require("../models/favourite");
-const home = require("../models/home");
+
+//const home = require("../models/home");
 const Home = require("../models/home");
+const User = require("../models/user");
 
 exports.getIndex = (req, res, next) => {
-
   //  to check the session value->
    // console.log('Session value', req.session);
-    
-
 
   Home.find().then((registeredHomes) => {
     res.render("store/index", {
       registeredHomes: registeredHomes,
       pageTitle: "airbnb Home",
       currentPage: "index",
-      isLoggedIn: req.isLoggedIn
+      isLoggedIn: req.isLoggedIn,
+      user: req.session.user
     });
   });
 };
@@ -26,7 +24,8 @@ exports.getHomes = (req, res, next) => {
       registeredHomes: registeredHomes,
       pageTitle: "Homes List",
       currentPage: "Home",
-      isLoggedIn: req.isLoggedIn
+      isLoggedIn: req.isLoggedIn,
+      user: req.session.user
     });
   });
 };
@@ -35,58 +34,60 @@ exports.getBookings = (req, res, next) => {
   res.render("store/bookings", {
     pageTitle: "My Bookings",
     currentPage: "bookings",
-    isLoggedIn: req.isLoggedIn
+    isLoggedIn: req.isLoggedIn,
+    user: req.session.user
   });
 };
 
 exports.getFavouriteList = (req, res, next) => {
-  Favourite.find()
-  .populate('houseId')
-  .then(favourites => {
-    
-    const favouriteHomes = favourites.filter(fav => fav.houseId).map(fav => fav.houseId);
-    
-      res.render("store/favourite-list", {
-        favouriteHomes: favouriteHomes,
-        pageTitle: "My Favourites",
-        currentPage: "favourites",
-        isLoggedIn: req.isLoggedIn
-      });
+  const userId= req.session.user._id;
+
+  const user = User.findById(userId).populate('favourites').then(user => {
+    const favouriteHomes = user.favourites;
+    res.render("store/favourite-list", {
+      favouriteHomes: favouriteHomes,
+      pageTitle: "My Favourites",
+      currentPage: "favourites",
+      isLoggedIn: req.isLoggedIn,
+      user: req.session.user
     });
+  });
 };
 
 exports.postAddToFavourite = (req, res, next) => {
+  console.log("came to add to favourite", req.body);
   const homeId = req.body.id;
+  const userId = req.session.user._id;
 
-  Favourite.findOne({houseId:homeId}).then((fav)=>{
-    if(fav){
-      console.log("already in favourites");
-      res.redirect("/favourites");
+  User.findById(userId).then(user => {
+    const alreadyFavourite = user.favourites.find(favHomeId => favHomeId.toString() === homeId);
+    if (alreadyFavourite) {
+      console.log("Home already in favourites");
+      return res.redirect('/favourites');
     }
-    else{
-      fav= new favourite({houseId:homeId});
-      fav.save().then((result)=>{
-        console.log("fav added", result);
-        res.redirect("/favourites");
-      });
-    }
+    user.favourites.push(homeId);
+    return user.save().then(() => {
+      console.log("Home added to favourites");
+      res.redirect('/favourites');
+    }); 
   })
-  .catch(err=>{
-    console.log("error while adding favourites");
-  })
+}
 
-};
+
 
 exports.postRemoveFromFavourite = (req, res, next) => {
+  //console.log(req.params);
   const homeId = req.params.homeId;
-  Favourite.findOneAndDelete({houseId:homeId}).then(result => {
-    console.log('Fav Removed: ', result);
-  }).catch(err => {
-    console.log("Error while removing favourite: ", err);
-  }).finally(() => {
-    res.redirect("/favourites");
-  });
-};
+  const userId = req.session.user._id;
+  User.findById(userId).then(user => {
+    user.favourites = user.favourites.filter(favHomeId => favHomeId.toString() !== homeId);
+    return user.save().then(() => {
+      console.log("Home removed from favourites");
+      res.redirect('/favourites');
+    });
+  });   
+}
+
 
 exports.getHomeDetails = (req, res, next) => {
   const homeId = req.params.homeId;
@@ -99,7 +100,8 @@ exports.getHomeDetails = (req, res, next) => {
         home: home,
         pageTitle: "Home Detail",
         currentPage: "Home",
-        isLoggedIn: req.isLoggedIn
+        isLoggedIn: req.isLoggedIn,
+        user: req.session.user
       });
     }
   });

@@ -4,39 +4,75 @@ const { validationResult } = require('express-validator');
 const bcrypt= require('bcryptjs');
 
 const User= require("../models/user");
+const { use } = require("express/lib/application");
 
 exports.getLogin = (req, res, next) => {
       res.render("auth/login", {
         pageTitle: "Login",
         currentPage: "login",
         editing: false,
-        isLoggedIn: req.isLoggedIn
+        isLoggedIn: req.isLoggedIn,
+        errors: [],
+        form: { email: "", password: "" },
+        user: {}
       });
     };
 
-    exports.postLogin = (req, res, next) => {
-      req.session.isLoggedIn = true;
-      req.session.save(err => {
-        if (err) {
-          console.log('Session save error:', err);
-        }
-        res.redirect("/");
-      });
-    };
+exports.postLogin = (req, res, next) => {
+      const { email, password } = req.body;
+      User.findOne({ email: email })
+        .then(user => {
+          if (!user) {
+            return res.status(422).render("auth/login", {
+              pageTitle: "Login",
+              currentPage: "login",
+              editing: false,
+              isLoggedIn: false,
+              errors: [{ msg: "Invalid email or password" }],
+              form: { email, password },
+              user: {}  
+            });
+          }
+          const doMatch = bcrypt.compare(password, user.password);
+          if (!doMatch) {
+            return res.status(422).render("auth/login", {
+              pageTitle: "Login",
+              currentPage: "login",
+              editing: false,
+              isLoggedIn: false,
+              errors: [{ msg: "Invalid email or password" }],
+              form: { email, password },
+              user: {}  
+            });
+          }
+        req.session.isLoggedIn = true;
+        req.session.user = user;
+        req.session.save(err => {
+          if (err) {
+            console.log('Session save error:', err);
+          }
+          res.redirect("/");
+        });
+    });
+};
 
 
-    exports.postLogout= (req, res, next)=>{
-      req.session.destroy(()=>{
-        res.redirect("/");
-      })
-    }
+exports.postLogout= (req, res, next)=>{
+  console.log(req.session._id);
+  req.session.destroy(()=>{
+    res.redirect("/");
+  })
+};  
 
     exports.getSignup = (req, res, next) => {
       res.render("auth/signup", {
         pageTitle: "Signup",
         currentPage: "signup",
         editing: false,
-        isLoggedIn: false
+        isLoggedIn: false,
+        errors: [],
+        form: { firstName: "", lastName: "", email: "", password: "", usertype: "guest", term: false },
+        user: {}
       });
     }
 
@@ -82,7 +118,8 @@ exports.getLogin = (req, res, next) => {
             editing: false,
             isLoggedIn: false,
             errors: errors.array(),
-            form: { firstName, lastName, email, password, usertype, term}
+            form: { firstName, lastName, email, password, usertype, term},
+            user: {}
           });
         }
         bcrypt.hash(password, 12).then(hashedPassword=>{ 
@@ -97,12 +134,13 @@ exports.getLogin = (req, res, next) => {
       user.save();
     })
     .then(result=>{
-      console.log("User signed up:", result);
+      //console.log("User signed up:", result);
       return res.render("auth/signToLogin", {
         pageTitle: "SignUp Successful",
         currentPage: "signup",
         editing: false,
-        isLoggedIn: false
+        isLoggedIn: false,
+        user: {},
       });
     })
     .catch(err=>{
@@ -112,7 +150,8 @@ exports.getLogin = (req, res, next) => {
             editing: false,
             isLoggedIn: false,
             errors: [err.message],
-            form: { firstName, lastName, email, password, usertype, term}
+            form: { firstName, lastName, email, password, usertype, term},
+            user: {}
           });
     })
 }];
