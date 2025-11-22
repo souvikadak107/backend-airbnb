@@ -39,6 +39,8 @@ const store = new mongoDBStore({
 // Middleware
 app.use(express.urlencoded());
 
+const secretKey= process.env.secret;
+
 app.use(session({
     secret:"james107",
     resave: false,
