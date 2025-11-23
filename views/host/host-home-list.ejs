@@ -22,7 +22,7 @@
                   <span class="text-gray-700"><%= home.rating %></span>
                 </div>
               </div>
-              <a href="/host/edit-home/<%=home._id%>?editing=true" class="bg-blue-500 p-2">Edit</a>
+              <a href="/host/edit-home/<%=home._id%>" class="bg-blue-500 p-2">Edit</a>
               <form action="/host/delete-home/<%= home._id %>" method="POST">
                 <button type="submit" class="bg-red-500 p-2">Delete</button>
               </form>
