@@ -4,6 +4,8 @@ const path = require('path');
 // External Module
 const express = require('express');
 const session = require('express-session');
+const multer = require('multer'); 
+
 const mongoDBStore= require('connect-mongodb-session')(session);
 
 // Load environment variables
@@ -35,9 +37,25 @@ const store = new mongoDBStore({
   collection: "session"
 });
 
+const storage = multer.diskStorage({
+  destination: function (req, file, cb) {
+    cb(null, 'uploads/');
+  },
+  filename: function (req, file, cb) {
+    cb(null, Date.now() + '-' + file.originalname);
+  }
+});
+
+// app.use(multer({storage: storage}).single('photo'));
+
+
+
 
 // Middleware
 app.use(express.urlencoded());
+app.use(multer({storage}).single('photo'));
+app.use(express.static(path.join(rootDir, 'public')));
+
 
 const secretKey= process.env.secret;
 
@@ -52,7 +70,6 @@ app.use(session({
 }));
 
 
-app.use(express.static(path.join(rootDir, 'public')));
 
 app.use((req, res, next) => {
   console.log("REQUEST:", req.method, req.url);
@@ -88,7 +105,7 @@ app.use("/host", hostRouter);
 app.use(errorsController.pageNotFound);
 
 // Port setup
-const PORT = process.env.PORT || 4000;
+const PORT = process.env.PORT || 4003;
 
 
 //connection set-up
