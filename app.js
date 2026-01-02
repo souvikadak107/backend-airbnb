@@ -46,15 +46,27 @@ const storage = multer.diskStorage({
   }
 });
 
-// app.use(multer({storage: storage}).single('photo'));
+const fileFilter = (req, file, cb) => {
+  if (file.mimetype === 'image/jpeg' || file.mimetype === 'image/png' || file.mimetype === 'image/jpg') {
+    cb(null, true);
+  } else {
+    cb(null, false);
+  }
+};
 
 
 
 
-// Middleware
+
+
+// Middleware for request parsing and static files
 app.use(express.urlencoded());
-app.use(multer({storage}).single('photo'));
+app.use(multer({storage, fileFilter}).single('photo'));
 app.use(express.static(path.join(rootDir, 'public')));
+app.use('/uploads', express.static(path.join(rootDir, 'uploads')));
+app.use('/host/uploads', express.static(path.join(rootDir, 'uploads')));
+app.use('/host/edit-home/uploads', express.static(path.join(rootDir, 'uploads')));
+app.use('/homes/uploads', express.static(path.join(rootDir, 'uploads')));
 
 
 const secretKey= process.env.secret;
