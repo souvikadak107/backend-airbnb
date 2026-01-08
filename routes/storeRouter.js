@@ -7,12 +7,6 @@ const storeController = require("../controllers/storeController");
 
 storeRouter.get("/", storeController.getIndex);
 storeRouter.get("/homes", storeController.getHomes);
-<<<<<<< HEAD
-storeRouter.get("/bookings", storeController.getBookings);
-storeRouter.get("/favourites", storeController.getFavouriteList);
-
-storeRouter.get("/homes/:homeId", storeController.getHomeDetails);
-=======
 
 storeRouter.get("/homes/:homeId", storeController.getHomeDetails);
 
@@ -26,7 +20,6 @@ storeRouter.post("/booking/:bookingId/cancel", storeController.postCancelBooking
 storeRouter.get("/favourites", storeController.getFavouriteList);
 
 
->>>>>>> working
 storeRouter.post("/favourites", storeController.postAddToFavourite);
 storeRouter.post("/favourites/delete/:homeId", storeController.postRemoveFromFavourite);
 

@@ -1,9 +1,6 @@
 const Home = require("../models/home");
-<<<<<<< HEAD
-=======
 const fs = require('fs');
 const path = require('path');
->>>>>>> working
 
 exports.getAddHome = (req, res, next) => {
   res.render("host/addHome", {
@@ -50,10 +47,6 @@ exports.getHostHomes = (req, res, next) => {
 };
 
 exports.postAddHome = (req, res, next) => {
-<<<<<<< HEAD
-  const { houseName, price, location, rating, photoUrl, description } = req.body;
-  const home = new Home({houseName, price, location, rating, photoUrl, description});
-=======
   const { houseName, price, location, rating, description } = req.body;
 
   if(!req.file){
@@ -64,7 +57,6 @@ exports.postAddHome = (req, res, next) => {
   const home = new Home({houseName, price, location, rating, description});
   home.photo= req.file.path;
 
->>>>>>> working
   home.save().then(() => {
     console.log('Home Saved successfully');
     res.redirect("/host/host-home-list");
@@ -77,24 +69,15 @@ exports.postEditHome = (req, res, next) => {
   //const temp= req.params.homeId;
   //console.log(req.method);
   
-<<<<<<< HEAD
-  const { _id, houseName, price, location, rating, photoUrl, description } = req.body;
-=======
   const { _id, houseName, price, location,  rating, description } = req.body;
   
   
->>>>>>> working
 
   Home.findById(_id).then((home)=>{
     home.houseName=houseName;
     home.price=price;
     home.location=location;
     home.rating=rating;
-<<<<<<< HEAD
-    home.photoUrl=photoUrl;
-    home.description=description;
-
-=======
     home.description=description;
 
     if(req.file){
@@ -107,7 +90,6 @@ exports.postEditHome = (req, res, next) => {
     }
     
 
->>>>>>> working
     home.save().then(result => {
       console.log('Home updated ', result);
     })
@@ -121,10 +103,6 @@ exports.postEditHome = (req, res, next) => {
     console.log("error while finding home", err);
     
   })
-<<<<<<< HEAD
-
-=======
->>>>>>> working
   
 };
 

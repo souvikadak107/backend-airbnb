@@ -28,10 +28,7 @@
     "express-validator": "^7.3.1",
     "mongodb": "^6.21.0",
     "mongoose": "^8.19.3",
-<<<<<<< HEAD
-=======
     "multer": "^2.0.2",
->>>>>>> working
     "mysql2": "^3.11.4"
   }
 }

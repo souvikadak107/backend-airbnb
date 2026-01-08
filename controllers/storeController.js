@@ -2,17 +2,9 @@
 //const home = require("../models/home");
 const Home = require("../models/home");
 const User = require("../models/user");
-<<<<<<< HEAD
-
-exports.getIndex = (req, res, next) => {
-  //  to check the session value->
-   // console.log('Session value', req.session);
-
-=======
 const Booking= require("../models/booking.js");
 
 exports.getIndex = (req, res, next) => {
->>>>>>> working
   Home.find().then((registeredHomes) => {
     res.render("store/index", {
       registeredHomes: registeredHomes,
@@ -37,19 +29,6 @@ exports.getHomes = (req, res, next) => {
 };
 
 exports.getBookings = (req, res, next) => {
-<<<<<<< HEAD
-  res.render("store/bookings", {
-    pageTitle: "My Bookings",
-    currentPage: "bookings",
-    isLoggedIn: req.isLoggedIn,
-    user: req.session.user
-  });
-};
-
-exports.getFavouriteList = (req, res, next) => {
-  const userId= req.session.user._id;
-
-=======
   if (!req.session.user) return res.redirect("/login");
 
   const userId = req.session.user._id;
@@ -199,7 +178,6 @@ exports.postCancelBooking = (req, res, next) => {
 
 exports.getFavouriteList = (req, res, next) => {
   const userId= req.session.user._id;
->>>>>>> working
   const user = User.findById(userId).populate('favourites').then(user => {
     const favouriteHomes = user.favourites;
     res.render("store/favourite-list", {
@@ -231,11 +209,6 @@ exports.postAddToFavourite = (req, res, next) => {
   })
 }
 
-<<<<<<< HEAD
-
-
-=======
->>>>>>> working
 exports.postRemoveFromFavourite = (req, res, next) => {
   //console.log(req.params);
   const homeId = req.params.homeId;
@@ -249,10 +222,6 @@ exports.postRemoveFromFavourite = (req, res, next) => {
   });   
 }
 
-<<<<<<< HEAD
-
-=======
->>>>>>> working
 exports.getHomeDetails = (req, res, next) => {
   const homeId = req.params.homeId;
   Home.findById(homeId).then((home) => {
