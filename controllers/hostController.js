@@ -3,6 +3,10 @@ const fs = require('fs');
 const path = require('path');
 
 exports.getAddHome = (req, res, next) => {
+   if (!req.session.user) return res.redirect("/login");
+   if(req.session.user.role !== 'host'){
+     return res.redirect("/");
+   }
   res.render("host/addHome", {
     pageTitle: "Add Home to airbnb",
     currentPage: "addHome",
@@ -13,9 +17,13 @@ exports.getAddHome = (req, res, next) => {
 };
 
 exports.getEditHome = (req, res, next) => {
+  if (!req.session.user) return res.redirect("/login");
+   if(req.session.user.role !== 'host'){
+     return res.redirect("/");
+   }
+
   const homeId = req.params.homeId;
   const editing = req.query.editing === 'true';
-
   Home.findById(homeId).then(home => {
     if (!home) {
       console.log("Home not found for editing.");
@@ -35,6 +43,10 @@ exports.getEditHome = (req, res, next) => {
 };
 
 exports.getHostHomes = (req, res, next) => {
+  if (!req.session.user) return res.redirect("/login");
+  if(req.session.user.role !== 'host'){
+     return res.redirect("/");
+  }
   Home.find().then(registeredHomes => {
     res.render("host/host-home-list", {
       registeredHomes: registeredHomes,
@@ -47,6 +59,12 @@ exports.getHostHomes = (req, res, next) => {
 };
 
 exports.postAddHome = (req, res, next) => {
+  if (!req.session.user) return res.redirect("/login");
+  if(req.session.user.role !== 'host'){
+     return res.redirect("/");
+  }
+
+
   const { houseName, price, location, rating, description } = req.body;
 
   if(!req.file){
@@ -68,6 +86,10 @@ exports.postAddHome = (req, res, next) => {
 exports.postEditHome = (req, res, next) => {
   //const temp= req.params.homeId;
   //console.log(req.method);
+  if (!req.session.user) return res.redirect("/login");
+  if(req.session.user.role !== 'host'){
+     return res.redirect("/");
+  }
   
   const { _id, houseName, price, location,  rating, description } = req.body;
   
@@ -107,6 +129,10 @@ exports.postEditHome = (req, res, next) => {
 };
 
 exports.postDeleteHome = (req, res, next) => {
+  if (!req.session.user) return res.redirect("/login");
+  if(req.session.user.role !== 'host'){
+     return res.redirect("/");
+  }
   const homeId = req.params.homeId;
   console.log('Came to delete ', homeId);
   Home.findByIdAndDelete(homeId).then(() => {
