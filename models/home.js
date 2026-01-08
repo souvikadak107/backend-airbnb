@@ -7,7 +7,11 @@ const homeSchema= mongoose.Schema({
   price:{type: Number, required: true},
   location:{type: String, required: true},
   rating:{type: Number, required: true},
+<<<<<<< HEAD
   photoUrl:{type: String},
+=======
+  photo:{type: String},
+>>>>>>> working
   description:{type: String},
 })
 
@@ -31,7 +35,11 @@ module.exports = mongoose.model('Home', homeSchema);
     this.price = price;
     this.location = location;
     this.rating = rating;
+<<<<<<< HEAD
     this.photoUrl = photoUrl;
+=======
+    this.photo = photo;
+>>>>>>> working
     this.description = description;
     this._id = _id;
 *

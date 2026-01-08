@@ -4,7 +4,11 @@
     <%- include('../partials/nav') %>
     <main class="container mx-auto mt-8 p-8 bg-white rounded-lg shadow-md">
       <h1 class="text-3xl font-bold mb-6 text-center text-gray-800">Register Your Home on AirBnB</h1>
+<<<<<<< HEAD
       <form action="/host/add-home" method="POST" class="max-w-md mx-auto">
+=======
+      <form action="/host/add-home" method="POST" enctype="multipart/form-data" class="max-w-md mx-auto">
+>>>>>>> working
         <input
           type="text"
           name="houseName"
@@ -26,9 +30,16 @@
           placeholder="Rating"
           class="w-full px-4 py-2 mb-4 border rounded-md focus:outline-none focus:ring-2 focus:ring-red-500"/>
         <input
+<<<<<<< HEAD
           type="text"
           name="photoUrl"
           placeholder="Enter Photo URL or /images/house1.png"
+=======
+          type="file"
+          name="photo"
+          placeholder="Upload Photo"
+          accept="image/*"
+>>>>>>> working
           class="w-full px-4 py-2 mb-4 border rounded-md focus:outline-none focus:ring-2 focus:ring-red-500"/>
         
           <input
