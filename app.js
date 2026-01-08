@@ -19,6 +19,7 @@ const rootDir = require("./utils/pathUtil");
 const storeRouter = require("./routes/storeRouter");
 const hostRouter = require("./routes/hostRouter");
 const authRouter = require("./routes/authRouter");
+const paymentRouter = require("./routes/paymentRouter");
 const errorsController = require("./controllers/errors");
 const { default: mongoose, Collection } = require('mongoose');
 
@@ -100,7 +101,8 @@ app.use((req,res,next)=>{
 
 // Routes
 app.use(storeRouter);
-app.use(authRouter)
+app.use(authRouter);
+app.use(paymentRouter);
 
 app.use("/host",(req, res, next) => {
   if(req.isLoggedIn){
