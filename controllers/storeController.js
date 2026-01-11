@@ -11,7 +11,7 @@ exports.getIndex = (req, res, next) => {
       pageTitle: "airbnb Home",
       currentPage: "index",
       isLoggedIn: req.isLoggedIn,
-      user: req.session.user
+      usertype: req.usertype
     });
   });
 };
@@ -23,7 +23,7 @@ exports.getHomes = (req, res, next) => {
       pageTitle: "Homes List",
       currentPage: "Home",
       isLoggedIn: req.isLoggedIn,
-      user: req.session.user
+      usertype: req.usertype
     });
   });
 };
@@ -49,8 +49,8 @@ exports.getBookings = (req, res, next) => {
         bookings,
         pageTitle: "My Bookings",
         currentPage: "bookings",
-        isLoggedIn: true,
-        user: req.session.user
+        isLoggedIn: req.isLoggedIn,
+        usertype: req.usertype
       });
     })
     .catch(err => {

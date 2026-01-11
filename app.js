@@ -3,10 +3,11 @@ const path = require('path');
 
 // External Module
 const express = require('express');
-const session = require('express-session');
-const multer = require('multer'); 
+const app = express();
 
-const mongoDBStore= require('connect-mongodb-session')(session);
+const multer = require('multer'); 
+const cookieParser = require("cookie-parser");
+
 
 // Load environment variables
 require('dotenv').config();
@@ -16,27 +17,26 @@ require('dotenv').config();
 const rootDir = require("./utils/pathUtil");
 
 
+
 const storeRouter = require("./routes/storeRouter");
 const hostRouter = require("./routes/hostRouter");
 const authRouter = require("./routes/authRouter");
 const paymentRouter = require("./routes/paymentRouter");
 const errorsController = require("./controllers/errors");
+const authApiRouter = require("./routes/api/auth.api");
 const { default: mongoose, Collection } = require('mongoose');
 
-const app = express();
+const authState= require("./middleware/authState");
+
+app.use(cookieParser());
+app.use(authState);
+
+
 
 // View engine setup
 app.set('view engine', 'ejs');
 app.set('views', 'views');
 
-
-
-// session store 
-
-const store = new mongoDBStore({
-  uri: process.env.MONGO_URI,
-  collection: "session"
-});
 
 const storage = multer.diskStorage({
   destination: function (req, file, cb) {
@@ -70,17 +70,8 @@ app.use('/host/edit-home/uploads', express.static(path.join(rootDir, 'uploads'))
 app.use('/homes/uploads', express.static(path.join(rootDir, 'uploads')));
 
 
-const secretKey= process.env.secret;
 
-app.use(session({
-    secret:secretKey,
-    resave: false,
-    saveUninitialized: false,
-    store: store,
-    cookie: {
-      maxAge: 1000 * 60 * 30
-    }
-}));
+
 
 
 
@@ -91,31 +82,18 @@ app.use((req, res, next) => {
 
 
 
-app.use((req,res,next)=>{
-  //  console.log('cookie checking', req.get('Cookie'));
-  //  req.isLoggedIn= req.get('Cookie')? req.get('Cookie').split('=')[1]==='true':false;
-
-  req.isLoggedIn= req.session.isLoggedIn;
-  next();
-})
-
-
 // Routes
 app.use(storeRouter);
 app.use(authRouter);
 app.use(paymentRouter);
-app.use("/api/auth", require("./routes/api/auth.api"));
+app.use("/api/auth", authApiRouter);
 
-app.use("/host",(req, res, next) => {
-  if(req.isLoggedIn){
-    next();
-  }
-  else{
-    res.redirect("/login");
-  }
-});
+const jwtPageGuard = require("./middleware/jwtPageGuard");
 
+app.use("/host", jwtPageGuard);
 app.use("/host", hostRouter);
+
+
 
 // 404 Page
 app.use(errorsController.pageNotFound);

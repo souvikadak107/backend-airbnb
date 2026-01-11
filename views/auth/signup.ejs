@@ -13,10 +13,10 @@
     <div class="bg-white p-8 rounded-lg shadow-lg w-full max-w-2xl">
       <h2 class="text-2xl font-semibold mb-6 text-center">Create an account</h2>
 
-      <!-- show errors (expects errors array or string passed to view) -->
-      <%- include('../partials/error', { errors: errors }) %>
+      <!-- Client-side error box -->
+      <div id="errorBox" class="hidden mb-4 p-3 rounded border border-red-300 bg-red-50 text-red-700"></div>
 
-      <form action="/signup" method="POST" class="space-y-4">
+      <form id="signupForm" class="space-y-4">
 
         <% if (typeof csrfToken !== 'undefined') { %>
           <input type="hidden" name="_csrf" value="<%= csrfToken %>">
@@ -66,16 +66,14 @@
           <label class="block text-gray-700 mb-1">User type</label>
           <div class="flex items-center gap-6">
             <label class="inline-flex items-center gap-2">
-              <input type="radio" name="usertype" value="guest" required
-                <%= (typeof form !== 'undefined' && form.usertype === 'guest') ? 'checked' : '' %>
-                class="form-radio" />
+              <input type="radio" name="usertype" value="guest" required class="form-radio"
+                <%= (typeof form !== 'undefined' && form.usertype === 'guest') ? 'checked' : '' %> />
               <span class="text-gray-700">Guest</span>
             </label>
 
             <label class="inline-flex items-center gap-2">
-              <input type="radio" name="usertype" value="host" required
-                <%= (typeof form !== 'undefined' && form.usertype === 'host') ? 'checked' : '' %>
-                class="form-radio" />
+              <input type="radio" name="usertype" value="host" required class="form-radio"
+                <%= (typeof form !== 'undefined' && form.usertype === 'host') ? 'checked' : '' %> />
               <span class="text-gray-700">Host</span>
             </label>
           </div>
@@ -83,23 +81,87 @@
 
         <div class="flex items-center gap-3">
           <input id="terms" name="terms" type="checkbox" value="1" required
-            <%= (typeof form !== 'undefined' && form.terms) ? 'checked' : '' %>
-            class="h-4 w-4 text-red-500 border-gray-300 rounded" />
-          <label for="terms" class="text-gray-700">I agree to the <a href="/terms" target="_blank" class="text-blue-600 underline">terms and conditions</a></label>
+            class="h-4 w-4 text-red-500 border-gray-300 rounded"
+            <%= (typeof form !== 'undefined' && form.terms) ? 'checked' : '' %> />
+          <label for="terms" class="text-gray-700">
+            I agree to the <a href="/terms" target="_blank" class="text-blue-600 underline">terms and conditions</a>
+          </label>
         </div>
 
         <div>
-          <button
-            type="submit"
-            class="w-full bg-red-500 text-white py-2 rounded hover:bg-red-600 transition"
-          >
+          <button type="submit"
+            class="w-full bg-red-500 text-white py-2 rounded hover:bg-red-600 transition">
             Sign Up
           </button>
         </div>
 
+        <p class="text-center text-gray-600 text-sm">
+          Already have an account? <a href="/login" class="text-blue-600 underline">Login</a>
+        </p>
+
       </form>
     </div>
   </div>
+
+  <script>
+    (function () {
+      const form = document.getElementById("signupForm");
+      const errorBox = document.getElementById("errorBox");
+      const btn = form.querySelector("button[type='submit']");
+
+      function showError(msg) {
+        errorBox.textContent = msg;
+        errorBox.classList.remove("hidden");
+      }
+      function clearError() {
+        errorBox.textContent = "";
+        errorBox.classList.add("hidden");
+      }
+
+      form.addEventListener("submit", async (e) => {
+        e.preventDefault();
+        clearError();
+
+        btn.disabled = true;
+        btn.classList.add("opacity-60", "cursor-not-allowed");
+
+        const payload = {
+          firstName: form.firstName.value.trim(),
+          lastName: form.lastName.value.trim(),
+          email: form.email.value.trim(),
+          password: form.password.value,
+          confirmPassword: form.confirmPassword.value,
+          usertype: form.usertype.value,
+          terms: form.terms.checked ? "1" : "0",
+        };
+
+        try {
+          const res = await fetch("/api/auth/signup", {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify(payload),
+          });
+
+          const data = await res.json().catch(() => ({}));
+
+          if (!res.ok) {
+            // Prefer validator message if present
+            const firstDetail = data.details && data.details[0] && (data.details[0].msg || data.details[0].message);
+            showError(firstDetail || data.error || "Signup failed");
+            return;
+          }
+
+          // Success
+          window.location.href = "/login";
+        } catch (err) {
+          showError("Network error. Please try again.");
+        } finally {
+          btn.disabled = false;
+          btn.classList.remove("opacity-60", "cursor-not-allowed");
+        }
+      });
+    })();
+  </script>
 
 </body>
 </html>

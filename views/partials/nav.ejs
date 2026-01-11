@@ -10,7 +10,7 @@
       </li>
       <% if(isLoggedIn ){ %>
                 
-        <% if(user && user.usertype === 'guest'){ %>
+        <% if(usertype === 'guest'){ %>
               <li>
                 <a
                   href="/homes"
@@ -32,7 +32,7 @@
                   >Bookings</a
                 >
               </li>
-        <% } else if(user && user.usertype === 'host'){ %>
+        <% } else if(usertype === 'host'){ %>
               <li>
                 <a
                   href="/homes"
@@ -88,12 +88,34 @@
           </li>
         <% } else { %>
             <li>
-                    <form action="/logout" method="POST">
-                      <button type="submit"
-                      class="hover:bg-red-400 py-2 px-4 rounded transition duration-300"
-                      >Logout</button>
-                    </form>
-            </li>
+                <button
+                  id="logoutBtn"
+                  class="hover:bg-red-400 py-2 px-4 rounded transition duration-300"
+                >
+                  Logout
+                </button>
+              </li>
+
+              <script>
+                document.getElementById("logoutBtn").addEventListener("click", async () => {
+                  try {
+                    const res = await fetch("/api/auth/logout", {
+                      method: "POST",
+                      headers: { "Content-Type": "application/json" }
+                    });
+
+                    if (!res.ok) {
+                      alert("Logout failed");
+                      return;
+                    }
+
+                    // JWT cookie is cleared by server
+                    window.location.href = "/";
+                  } catch (err) {
+                    alert("Network error during logout");
+                  }
+                });
+              </script>
         <% } %>
     </ul>
   </nav>
