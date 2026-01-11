@@ -56,12 +56,12 @@ const fileFilter = (req, file, cb) => {
 };
 
 
-
-
+//  both form-data and JSON work reliably
+app.use(express.urlencoded());
+app.use(express.json());
 
 
 // Middleware for request parsing and static files
-app.use(express.urlencoded());
 app.use(multer({storage, fileFilter}).single('photo'));
 app.use(express.static(path.join(rootDir, 'public')));
 app.use('/uploads', express.static(path.join(rootDir, 'uploads')));
@@ -99,10 +99,12 @@ app.use((req,res,next)=>{
   next();
 })
 
+
 // Routes
 app.use(storeRouter);
 app.use(authRouter);
 app.use(paymentRouter);
+app.use("/api/auth", require("./routes/api/auth.api"));
 
 app.use("/host",(req, res, next) => {
   if(req.isLoggedIn){

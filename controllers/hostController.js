@@ -4,7 +4,7 @@ const path = require('path');
 
 exports.getAddHome = (req, res, next) => {
    if (!req.session.user) return res.redirect("/login");
-   if(req.session.user.role !== 'host'){
+   if(req.session.user.usertype !== 'host'){
      return res.redirect("/");
    }
   res.render("host/addHome", {
@@ -18,7 +18,9 @@ exports.getAddHome = (req, res, next) => {
 
 exports.getEditHome = (req, res, next) => {
   if (!req.session.user) return res.redirect("/login");
-   if(req.session.user.role !== 'host'){
+  
+  
+   if(req.session.user.usertype !== 'host'){
      return res.redirect("/");
    }
 
@@ -44,7 +46,7 @@ exports.getEditHome = (req, res, next) => {
 
 exports.getHostHomes = (req, res, next) => {
   if (!req.session.user) return res.redirect("/login");
-  if(req.session.user.role !== 'host'){
+  if(req.session.user.usertype !== 'host'){
      return res.redirect("/");
   }
   Home.find().then(registeredHomes => {
@@ -60,7 +62,7 @@ exports.getHostHomes = (req, res, next) => {
 
 exports.postAddHome = (req, res, next) => {
   if (!req.session.user) return res.redirect("/login");
-  if(req.session.user.role !== 'host'){
+  if(req.session.user.usertype !== 'host'){
      return res.redirect("/");
   }
 
@@ -87,7 +89,7 @@ exports.postEditHome = (req, res, next) => {
   //const temp= req.params.homeId;
   //console.log(req.method);
   if (!req.session.user) return res.redirect("/login");
-  if(req.session.user.role !== 'host'){
+  if(req.session.user.usertype !== 'host'){
      return res.redirect("/");
   }
   
@@ -130,7 +132,7 @@ exports.postEditHome = (req, res, next) => {
 
 exports.postDeleteHome = (req, res, next) => {
   if (!req.session.user) return res.redirect("/login");
-  if(req.session.user.role !== 'host'){
+  if(req.session.user.usertype !== 'host'){
      return res.redirect("/");
   }
   const homeId = req.params.homeId;
