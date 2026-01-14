@@ -8,8 +8,14 @@ function setTokenCookie(res, token) {
     httpOnly: true,
     sameSite: "lax",
     secure: false, // set true only in HTTPS production
-    maxAge: 30 * 60 * 1000, // 30 min
+    maxAge: 5* 60 * 60 * 1000, // 5 hours
   });
+}
+
+exports.getSignup = (req, res) => {
+  return res.status(200).json({
+      message: "Signup API endpoint"
+    });
 }
 
 exports.signup = async (req, res, next) => {
@@ -44,6 +50,13 @@ exports.signup = async (req, res, next) => {
     next(err);
   }
 };
+
+
+exports.getLogin = (req, res) => {
+  return res.status(200).json({
+      message: "Login API endpoint"
+    });
+}
 
 exports.login = async (req, res, next) => {
   try {

@@ -72,8 +72,7 @@ exports.getBookHome = (req, res, next) => {
         home: home,
         pageTitle: "Book Home",
         currentPage: "Book Home",
-        isLoggedIn: req.isLoggedIn,
-        user: req.session.user
+        isLoggedIn: req.isLoggedIn
       });
     }
   }); 

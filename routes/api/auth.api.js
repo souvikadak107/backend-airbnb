@@ -5,6 +5,9 @@ const authApiRouter = express.Router();
 const authApiController = require("../../controllers/authApiController");
 const User = require("../../models/user");
 
+
+authApiRouter.get("/signup", authApiController.getSignup);
+
 authApiRouter.post(
   "/signup",
   [
@@ -28,6 +31,8 @@ authApiRouter.post(
   authApiController.signup
 );
 
+
+authApiRouter.get("/login", authApiController.getLogin);
 authApiRouter.post("/login", authApiController.login);
 authApiRouter.post("/logout", authApiController.logout);
 

@@ -23,7 +23,13 @@ const hostRouter = require("./routes/hostRouter");
 const authRouter = require("./routes/authRouter");
 const paymentRouter = require("./routes/paymentRouter");
 const errorsController = require("./controllers/errors");
+
+
 const authApiRouter = require("./routes/api/auth.api");
+const storeApiRouter = require("./routes/api/store.api");
+const hostApiRouter = require("./routes/api/host.api");
+const paymentApiRouter = require("./routes/api/payment.api");
+
 const { default: mongoose, Collection } = require('mongoose');
 
 const authState= require("./middleware/authState");
@@ -64,6 +70,7 @@ app.use(express.json());
 // Middleware for request parsing and static files
 app.use(multer({storage, fileFilter}).single('photo'));
 app.use(express.static(path.join(rootDir, 'public')));
+
 app.use('/uploads', express.static(path.join(rootDir, 'uploads')));
 app.use('/host/uploads', express.static(path.join(rootDir, 'uploads')));
 app.use('/host/edit-home/uploads', express.static(path.join(rootDir, 'uploads')));
@@ -86,7 +93,12 @@ app.use((req, res, next) => {
 app.use(storeRouter);
 app.use(authRouter);
 app.use(paymentRouter);
+
 app.use("/api/auth", authApiRouter);
+app.use("/api/payment", paymentApiRouter);
+app.use("/api/store", storeApiRouter);
+app.use("/api/host", hostApiRouter);
+
 
 const jwtPageGuard = require("./middleware/jwtPageGuard");
 

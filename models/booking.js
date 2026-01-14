@@ -42,7 +42,7 @@ const bookingSchema = new mongoose.Schema(
   { timestamps: true }
 );
 
-bookingSchema.index({ home: 1, checkIn: 1, checkOut: 1 });
+bookingSchema.index({ home: 1, status: 1, checkIn: 1, checkOut: 1 });
 
 bookingSchema.pre("save", function (next) {
   if (!this.isModified("checkIn") && !this.isModified("checkOut")) {
