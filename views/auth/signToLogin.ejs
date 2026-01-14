@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html lang="en">
+<%- include('../partials/head') %>
+
+<body class="bg-gray-100 min-h-screen">
+
+  <!-- Navbar -->
+  <%- include('../partials/nav') %>
+
+  <!-- Signed Up Box -->
+  <div class="flex justify-center items-center mt-10">
+    <div class="bg-white p-8 rounded-lg shadow-lg w-full max-w-md text-center">
+      <h2 class="text-2xl font-semibold mb-4">Successfully signed up</h2>
+      <p class="mb-2">Your account has been created successfully.</p>
+      <p class="mb-4 text-sm text-gray-600">You will be redirected to the login page in 5 seconds.</p>
+      <a href="/login" class="inline-block bg-red-500 text-white py-2 px-4 rounded hover:bg-red-600 transition">Go to Login</a>
+    </div>
+  </div>
+
+  <script>
+    // auto-redirect to /login after 5 seconds
+    setTimeout(function () {
+      window.location.href = '/login';
+    }, 5000);
+  </script>
+</body>
+</html>
