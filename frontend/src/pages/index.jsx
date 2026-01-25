@@ -21,42 +21,55 @@ export default function IndexPage() {
     loadHomes();
   }, []);
 
-  if (loading) return <p style={styles.msg}>Loading homes...</p>;
-  if (err) return <p style={{ ...styles.msg, color: "crimson" }}>{err}</p>;
+  if (loading) return <p className="text-center p-10">Loading homes...</p>;
+  if (err) return <p className="text-center text-red-500 p-10">{err}</p>;
 
   return (
-    <main style={styles.container}>
-      <h2 style={styles.heading}>
+    <main className="container mx-auto bg-white shadow-lg rounded-lg p-8 mt-10 max-w-6xl">
+      <h2 className="text-3xl text-red-500 font-bold text-center mb-6">
         Welcome to airbnb index page
       </h2>
 
-      <div style={styles.grid}>
+      <div className="flex flex-wrap justify-center gap-6">
         {homes.map((home) => (
-          <div key={home._id} style={styles.card}>
+          <div
+            key={home._id}
+            className="bg-white rounded-lg shadow-md overflow-hidden hover:shadow-lg transition duration-300 w-full max-w-sm"
+          >
             <img
               src={home.photo}
               alt={home.houseName}
-              style={styles.image}
+              className="w-full h-48 object-cover"
             />
 
-            <div style={styles.body}>
-              <h3 style={styles.title}>{home.houseName}</h3>
-              <p style={styles.location}>{home.location}</p>
+            <div className="p-4">
+              <h3 className="text-xl font-semibold text-gray-800 mb-2">
+                {home.houseName}
+              </h3>
 
-              <div style={styles.row}>
-                <span style={styles.price}>
+              <p className="text-gray-600 mb-2">📍 {home.location}</p>
+
+              <div className="flex justify-between items-center mb-3">
+                <span className="text-lg font-bold text-red-500">
                   Rs {home.price} / night
                 </span>
-                <span style={styles.rating}>
-                   {home.rating}
-                </span>
+                <div className="flex items-center gap-1">
+                  ⭐ <span>{home.rating}</span>
+                </div>
               </div>
 
-              <div style={styles.actions}>
-                <Link to={`/homes/${home._id}`} style={styles.btn}>
+              <div className="flex gap-3">
+                <Link
+                  to={`/homes/${home._id}`}
+                  className="bg-blue-300 px-3 py-1 rounded"
+                >
                   Details
                 </Link>
-                <Link to={`/homes/booking/${home._id}`} style={styles.btn}>
+
+                <Link
+                  to={`/homes/${home._id}/booking`}
+                  className="bg-blue-300 px-3 py-1 rounded"
+                >
                   Book
                 </Link>
               </div>
@@ -67,74 +80,3 @@ export default function IndexPage() {
     </main>
   );
 }
-
-const styles = {
-  container: {
-    maxWidth: 1100,
-    margin: "30px auto",
-    padding: 20,
-    fontFamily: "system-ui, sans-serif",
-  },
-  heading: {
-    textAlign: "center",
-    color: "#dc2626",
-    marginBottom: 30,
-  },
-  grid: {
-    display: "flex",
-    flexWrap: "wrap",
-    justifyContent: "center",
-    gap: 20,
-  },
-  card: {
-    width: 300,
-    border: "1px solid #ddd",
-    borderRadius: 10,
-    overflow: "hidden",
-    boxShadow: "0 4px 10px rgba(0,0,0,0.08)",
-  },
-  image: {
-    width: "100%",
-    height: 180,
-    objectFit: "cover",
-  },
-  body: {
-    padding: 12,
-  },
-  title: {
-    margin: "6px 0",
-  },
-  location: {
-    color: "#555",
-    fontSize: 14,
-  },
-  row: {
-    display: "flex",
-    justifyContent: "space-between",
-    margin: "8px 0",
-  },
-  price: {
-    fontWeight: "bold",
-    color: "#dc2626",
-  },
-  rating: {
-    color: "#444",
-  },
-  actions: {
-    display: "flex",
-    justifyContent: "space-between",
-    marginTop: 10,
-  },
-  btn: {
-    textDecoration: "none",
-    background: "#e5e7eb",
-    padding: "6px 10px",
-    borderRadius: 6,
-    color: "#111",
-    fontSize: 14,
-  },
-  msg: {
-    textAlign: "center",
-    padding: 40,
-  },
-};

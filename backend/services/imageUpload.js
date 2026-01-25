@@ -34,11 +34,10 @@ exports.uploadImage = async (filePath) => {
     e.http_code = httpCode;
     throw e;
   } finally {
-    // ✅ Always cleanup temp file after upload attempt (success or fail)
     try {
       fs.unlinkSync(filePath);
     } catch (_) {
-      // ignore cleanup errors
+     
     }
   }
 };

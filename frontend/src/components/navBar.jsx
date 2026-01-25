@@ -1,58 +1,45 @@
 import { NavLink, useNavigate } from "react-router-dom";
-import { useEffect, useState } from "react";
-import { authStore } from "../auth/token";
+import { useAuth } from "../context/AuthContext.jsx";
 
 export default function NavBar() {
   const nav = useNavigate();
-  const [loggedIn, setLoggedIn] = useState(authStore.isLoggedIn());
-  const [user, setUser] = useState(authStore.getUser());
+  const { user, loading, logout } = useAuth();
 
-  useEffect(() => {
-    const sync = () => {
-      setLoggedIn(authStore.isLoggedIn());
-      setUser(authStore.getUser());
-    };
-    sync();
-    window.addEventListener("auth_changed", sync);
-    return () => window.removeEventListener("auth_changed", sync);
-  }, []);
+  if (loading) return null;
 
+  const loggedIn = !!user;
   const role = user?.usertype;
 
-  function logout() {
-    authStore.logout();
+  async function handleLogout() {
+    await logout();
     nav("/", { replace: true });
   }
 
-  const linkStyle = ({ isActive }) => ({
-    marginRight: 12,
-    textDecoration: "none",
-    color: "#fff",
-    padding: "6px 10px",
-    borderRadius: 6,
-    background: isActive ? "#b91c1c" : "transparent",
-  });
+  const linkClass = ({ isActive }) =>
+    `mr-3 px-3 py-1 rounded text-white transition
+     ${isActive ? "bg-red-700" : "hover:bg-red-600"}`;
 
   return (
-    <header style={styles.header}>
-      <nav style={styles.nav}>
-        <div style={styles.left}>
-          <NavLink to="/" style={linkStyle}>
+    <header className="bg-red-600 px-5 py-3 text-white">
+      <nav className="max-w-6xl mx-auto flex items-center justify-between">
+        {/* LEFT */}
+        <div className="flex items-center">
+          <NavLink to="/" className={linkClass}>
             airbnb
           </NavLink>
 
           {loggedIn && (
             <>
-              <NavLink to="/homes" style={linkStyle}>Homes</NavLink>
-              <NavLink to="/favourites" style={linkStyle}>Favourites</NavLink>
-              <NavLink to="/bookings" style={linkStyle}>Bookings</NavLink>
+              <NavLink to="/homes" className={linkClass}>Homes</NavLink>
+              <NavLink to="/favourites" className={linkClass}>Favourites</NavLink>
+              <NavLink to="/bookings" className={linkClass}>Bookings</NavLink>
 
               {role === "host" && (
                 <>
-                  <NavLink to="/host/host-home-list" style={linkStyle}>
+                  <NavLink to="/host/home-list" className={linkClass}>
                     Host Homes
                   </NavLink>
-                  <NavLink to="/host/add-home" style={linkStyle}>
+                  <NavLink to="/host/add-home" className={linkClass}>
                     Add Home
                   </NavLink>
                 </>
@@ -61,14 +48,18 @@ export default function NavBar() {
           )}
         </div>
 
-        <div>
+        {/* RIGHT */}
+        <div className="flex items-center">
           {!loggedIn ? (
             <>
-              <NavLink to="/signup" style={linkStyle}>Signup</NavLink>
-              <NavLink to="/login" style={linkStyle}>Login</NavLink>
+              <NavLink to="/signup" className={linkClass}>Signup</NavLink>
+              <NavLink to="/login" className={linkClass}>Login</NavLink>
             </>
           ) : (
-            <button onClick={logout} style={styles.logoutBtn}>
+            <button
+              onClick={handleLogout}
+              className="bg-red-700 px-4 py-1 rounded hover:bg-red-800 transition"
+            >
               Logout
             </button>
           )}
@@ -77,30 +68,3 @@ export default function NavBar() {
     </header>
   );
 }
-
-const styles = {
-  header: {
-    background: "#dc2626",
-    padding: "10px 20px",
-    color: "#fff",
-  },
-  nav: {
-    maxWidth: 1100,
-    margin: "0 auto",
-    display: "flex",
-    justifyContent: "space-between",
-    alignItems: "center",
-  },
-  left: {
-    display: "flex",
-    alignItems: "center",
-  },
-  logoutBtn: {
-    background: "#b91c1c",
-    color: "#fff",
-    border: "none",
-    padding: "6px 12px",
-    borderRadius: 6,
-    cursor: "pointer",
-  },
-};

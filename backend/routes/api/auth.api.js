@@ -1,5 +1,6 @@
 const express = require("express");
 const { body } = require("express-validator");
+const auth = require("../../middleware/auth");
 const authApiRouter = express.Router();
 
 const authApiController = require("../../controllers/authApiController");
@@ -31,9 +32,9 @@ authApiRouter.post(
   authApiController.signup
 );
 
-
-
 authApiRouter.post("/login", authApiController.login);
 authApiRouter.post("/logout", authApiController.logout);
+
+authApiRouter.get("/me", auth, authApiController.me);
 
 module.exports = authApiRouter;

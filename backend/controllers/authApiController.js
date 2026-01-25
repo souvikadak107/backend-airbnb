@@ -2,13 +2,9 @@ const bcrypt = require("bcryptjs");
 const jwt = require("jsonwebtoken");
 const User = require("../models/user");
 const { validationResult } = require("express-validator");
+const { cookieOptions } = require("../utils/cookies");
 
 
-exports.getSignup = (req, res) => {
-  return res.status(200).json({
-      message: "Signup API endpoint"
-    });
-}
 
 exports.signup = async (req, res, next) => {
   try {
@@ -62,9 +58,10 @@ exports.login = async (req, res, next) => {
       { expiresIn: process.env.JWT_EXPIRES_IN || "30m" }
     );
 
+    res.cookie("token", token, cookieOptions()); // set cookie
+
     return res.status(200).json({
       message: "Login successful",
-      token,
       user: { id: user._id, email: user.email, usertype: user.usertype },
     });
   } catch (err) {
@@ -73,6 +70,21 @@ exports.login = async (req, res, next) => {
 };
 
 exports.logout = (req, res) => {
-  res.clearCookie("token");
+  const opts = cookieOptions();
+  delete opts.maxAge; // to expire immediately
+  res.clearCookie("token", opts);
   return res.status(200).json({ message: "Logout successful" });
+};
+
+
+exports.me = (req, res) => {
+  return res.status(200).json({
+    user: {
+      id: req.user._id,
+      email: req.user.email,
+      usertype: req.user.usertype,
+      firstName: req.user.firstName,
+      lastName: req.user.lastName,
+    },
+  });
 };

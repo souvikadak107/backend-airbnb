@@ -1,15 +1,23 @@
 // Core Module
 const path = require('path');
 
+//evn module
+require('dotenv').config();
+
 // External Module
 const express = require('express');
 const app = express();
 
 
+//cookie-parser
+const cookieParser = require("cookie-parser");
+app.use(cookieParser());
 
 
-// Load environment variables
-require('dotenv').config();
+//  both form-data and JSON work reliably
+app.use(express.json());
+app.use(express.urlencoded({ extended: false }));
+
 
 // Local Modules
 const rootDir = require("./utils/pathUtil");
@@ -21,6 +29,7 @@ app.use(cors({
   origin: "http://localhost:5173",
   methods: ["GET","POST","PUT","PATCH","DELETE"],
   allowedHeaders: ["Content-Type","Authorization"],
+  credentials: true,
 }));
 
 
@@ -35,9 +44,7 @@ const paymentApiRouter = require("./routes/api/payment.api");
 const { default: mongoose, Collection } = require('mongoose');
 
 
-//  both form-data and JSON work reliably
-app.use(express.json());
-app.use(express.urlencoded({ extended: false }));
+
 
 
 app.use(express.static(path.join(rootDir, 'public')));

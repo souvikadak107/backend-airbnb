@@ -33,5 +33,5 @@ hostApiRouter.get("/homes/:homeId/photo", auth, hostauth, hostApiController.getP
 hostApiRouter.patch("/homes/:homeId/photo", auth, hostauth, hostApiController.patchPhotoPage);
 
 //Delete home
-hostApiRouter.delete('/homes/:homeId', auth, hostauth, hostApiController.deleteHomes);
+hostApiRouter.delete('/delete-home/:homeId', auth, hostauth, hostApiController.deleteHomes);
 module.exports = hostApiRouter;

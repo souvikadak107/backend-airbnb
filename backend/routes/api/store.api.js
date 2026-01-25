@@ -12,7 +12,7 @@ storeApiRouter.get('/homes/:homeId', auth, storeApiController.getHomeDetails);
 
 
 storeApiRouter.get('/favourites', auth, storeApiController.getFavorites);
-storeApiRouter.get('/favourites/:homeId', auth, storeApiController.addToFavorites);
+storeApiRouter.post('/favourites/:homeId', auth, storeApiController.postAddToFavorites);
 
 storeApiRouter.delete('/favourites/:homeId', auth, storeApiController.removeFromFavorites);
 

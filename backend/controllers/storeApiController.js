@@ -69,7 +69,7 @@ exports.getFavorites = async (req, res) => {
   } 
 }
 
-exports.addToFavorites = async (req, res) => {
+exports.postAddToFavorites = async (req, res) => {
   const homeId = req.params.homeId;
   try{
     const userId = req.user._id;
@@ -117,6 +117,7 @@ exports.removeFromFavorites = async (req, res) => {
         error: "Home is not in favorites"
       });
     }
+
     user.favourites.splice(index, 1);
     await user.save();
     return res.status(200).json({

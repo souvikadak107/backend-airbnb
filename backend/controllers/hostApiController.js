@@ -12,11 +12,8 @@ exports.getAddHomes = (req, res) => {
 
 
 exports.postAddHomes = async (req, res) => {
-
-
   try {
     const { houseName, price, location, rating, description } = req.body;
-
 
     if (!houseName || !price || !location || !rating || !description) {
       return res.status(400).json({ error: "All fields are required" });
