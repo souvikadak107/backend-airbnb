@@ -1,36 +1,12 @@
 {
-  "name": "15mongoupdate",
-  "version": "1.0.0",
-  "main": "index.js",
+  "private": true,
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1",
-    "build:css": "tailwindcss -i ./views/input.css -o ./public/output.css",
-    "start": "npm run build:css && nodemon app.js"
+    "dev": "concurrently \"npm --prefix backend run dev\" \"npm --prefix frontend run dev\""
   },
-  "keywords": [],
-  "author": "",
-  "license": "ISC",
   "devDependencies": {
-    "autoprefixer": "^10.4.20",
-    "nodemon": "^3.1.11",
-    "postcss": "^8.4.47",
-    "tailwindcss": "^3.4.13"
+    "concurrently": "^9.2.1"
   },
   "dependencies": {
-    "bcrypt": "^6.0.0",
-    "bcryptjs": "^3.0.3",
-    "body-parser": "^1.20.3",
-    "connect-mongodb-session": "^5.0.0",
-    "cookie-parser": "^1.4.7",
-    "dotenv": "^17.2.3",
-    "ejs": "^3.1.10",
-    "express": "^4.21.2",
-    "express-session": "^1.18.2",
-    "express-validator": "^7.3.1",
-    "jsonwebtoken": "^9.0.3",
-    "mongodb": "^6.21.0",
-    "mongoose": "^8.19.3",
-    "multer": "^2.0.2",
-    "mysql2": "^3.11.4"
+    "cloudinary": "^2.9.0"
   }
 }
