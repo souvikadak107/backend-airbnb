@@ -12,6 +12,7 @@ exports.uploadImage = async (filePath) => {
   }
 
   try {
+    console.log("Uploading image to Cloudinary:", filePath);
     const result = await cloudinary.uploader.upload(filePath, {
       folder: "homes",
       resource_type: "image",

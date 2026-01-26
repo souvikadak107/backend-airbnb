@@ -45,7 +45,7 @@ export default function HostHomeList() {
   }, [authLoading, user, nav]);
 
   async function deleteHome(homeId) {
-    if (!confirm("Delete this home?")) return;
+    
 
     try {
       
@@ -69,9 +69,7 @@ export default function HostHomeList() {
       <h2 className="text-3xl text-red-500 font-bold text-center mb-2">
         Hey Host! Here are your homes:
       </h2>
-      <p className="text-center text-gray-600 mb-6">
-        Total: <span className="font-semibold">{count}</span>
-      </p>
+      
 
       {homes.length === 0 ? (
         <p className="text-center text-gray-600">No homes found.</p>
@@ -108,7 +106,7 @@ export default function HostHomeList() {
 
                 <div className="flex gap-3">
                   <Link
-                    to={`/host/edit-home/${home._id}`}
+                    to={`/edit-home/${home._id}`}
                     className="bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600 transition"
                   >
                     Edit

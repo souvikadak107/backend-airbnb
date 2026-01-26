@@ -25,7 +25,7 @@ export default function NavBar() {
         {/* LEFT */}
         <div className="flex items-center">
           <NavLink to="/" className={linkClass}>
-            airbnb
+            stayNight
           </NavLink>
 
           {loggedIn && (
@@ -36,10 +36,10 @@ export default function NavBar() {
 
               {role === "host" && (
                 <>
-                  <NavLink to="/host/home-list" className={linkClass}>
+                  <NavLink to="/home-list" className={linkClass}>
                     Host Homes
                   </NavLink>
-                  <NavLink to="/host/add-home" className={linkClass}>
+                  <NavLink to="/add-home" className={linkClass}>
                     Add Home
                   </NavLink>
                 </>

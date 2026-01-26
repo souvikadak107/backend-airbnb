@@ -3,6 +3,7 @@ const Home = require("../models/home");
 const Booking = require("../models/booking");
 const { uploadImage } = require("../services/imageUpload");
 const mongoose = require("mongoose");
+const { deleteImage } = require("../services/imageUpload");
 
 exports.getAddHomes = (req, res) => {
   res.status(200).json({
@@ -79,7 +80,7 @@ exports.getEditHomes = async (req, res) => {
   try { 
     const hostId = req.user._id;
     const homeId = req.params.homeId;
-    const home = await Home.findById({ owner: hostId, _id: homeId });
+    const home = await Home.findOne({ owner: hostId, _id: homeId });
 
     if (!home) {
       return res.status(404).json({ error: "Home not found" });
@@ -102,7 +103,7 @@ exports.patchEditHomes = async (req, res) => {
   try{
     const hostId = req.user._id;
     const homeId = req.params.homeId;
-    const home = await Home.findById({ owner: hostId, _id: homeId });
+    const home = await Home.findOne({ owner: hostId, _id: homeId });
     if (!home) {
       return res.status(404).json({ error: "Home not found" });
     }
@@ -140,7 +141,7 @@ exports.deleteHomes = async (req, res) => {
     const hostId = req.user._id;
     const homeId = req.params.homeId;
 
-    const home = await Home.findById({ owner: hostId, _id: homeId });
+    const home = await Home.findOne({ owner: hostId, _id: homeId });
     if (!home) {
       return res.status(404).json({ error: "Home not found" });
     }
@@ -165,7 +166,7 @@ exports.getPhotoPage = async (req, res) => {
   try {
     const homeId = req.params.homeId;
     const hostId = req.user._id;
-    const home = await Home.findById({ owner: hostId, _id: homeId });
+    const home = await Home.findOne({ owner: hostId, _id: homeId });
     if (!home) {
       return res.status(404).json({ error: "Home not found" });
     }
@@ -187,7 +188,7 @@ exports.patchPhotoPage = async (req, res) => {
   try {
     const homeId = req.params.homeId;
     const hostId = req.user._id;
-    const home = await Home.findById({ owner: hostId, _id: homeId });
+    const home = await Home.findOne({ owner: hostId, _id: homeId });
     if (!home) {
       return res.status(404).json({ error: "Home not found" });
     }
@@ -195,10 +196,18 @@ exports.patchPhotoPage = async (req, res) => {
     if (!req.file) {
       return res.status(400).json({ error: "New photo file is required" });
     }
+     console.log("i am here");
+    const oldPublicId = home.photoPublicId;
 
-
-    await deleteImage(home.photoPublicId);
+    // ✅ upload first
     const image = await uploadImage(req.file.path);
+
+    // ✅ then delete old (best-effort)
+    try {
+      await deleteImage(oldPublicId);
+    } catch (e) {
+      console.warn("Old image delete failed:", e.message);
+    }
 
     home.photo = image.url;
     home.photoPublicId = image.public_id;

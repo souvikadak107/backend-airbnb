@@ -30,7 +30,7 @@ hostApiRouter.patch('/homes/:homeId', auth, hostauth, hostApiController.patchEdi
 //edit Photo 
 hostApiRouter.get("/homes/:homeId/photo", auth, hostauth, hostApiController.getPhotoPage);
 
-hostApiRouter.patch("/homes/:homeId/photo", auth, hostauth, hostApiController.patchPhotoPage);
+hostApiRouter.patch("/homes/:homeId/photo", auth, hostauth,upload.single("photo"), hostApiController.patchPhotoPage);
 
 //Delete home
 hostApiRouter.delete('/delete-home/:homeId', auth, hostauth, hostApiController.deleteHomes);

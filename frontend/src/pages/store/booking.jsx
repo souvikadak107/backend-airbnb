@@ -128,11 +128,11 @@ export default function Bookings() {
                       >
                         Cancel
                       </button>
-                    ) : b.status === "paylater" ? (
+                    ) : b.status === "pending_payment" ? (
                       <>
                         {/* If you have a payment route in React, keep it */}
                         <Link
-                          to={`/payment/${b._id}`}
+                          to={`/checkout/${b._id}`}
                           className="w-full text-center bg-green-600 text-white py-2 rounded hover:bg-green-700"
                         >
                           Pay Now

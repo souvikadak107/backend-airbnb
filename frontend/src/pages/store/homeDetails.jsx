@@ -14,6 +14,7 @@ export default function HomeDetails() {
 
   useEffect(() => {
     let ignore = false;
+    
 
     async function load() {
       try {

@@ -15,6 +15,9 @@ import BookigDetails from "./pages/store/bookigDetails";
 import HostHomeList from "./pages/host/hostHomeList";
 import AddHome from "./pages/host/addHome";
 import EditHome from "./pages/host/editHome"; 
+import UpdateHomePhoto from "./pages/host/updateHomePic";
+
+import Payment from "./pages/payment/payment";
 
 import Signup from "./pages/auth/signup";
 import Login from "./pages/auth/login";
@@ -34,9 +37,12 @@ export default function App() {
         <Route path="/bookings" element={<Bookings />} />
         <Route path="/homes/:homeId/booking" element={<BookigDetails />} />
 
-        <Route path="/host/home-list" element={<HostHomeList />} />
-        <Route path="/host/add-home" element={<AddHome />} />
-        <Route path="/host/edit-home/:homeId" element={<EditHome />} />
+        <Route path="/home-list" element={<HostHomeList />} />
+        <Route path="/add-home" element={<AddHome />} />
+        <Route path="/edit-home/:homeId" element={<EditHome />} />
+        <Route path="/homes/:homeId/photo" element={<UpdateHomePhoto />} />
+
+        <Route path="/checkout/:bookingId" element={<Payment />} />
 
         <Route path="/signup" element={<Signup />} />
         <Route path="/login" element={<Login />} />

@@ -96,9 +96,9 @@ export default function CreateBooking() {
         },
       });
 
-      // After booking create, you can redirect to bookings
+     
       alert(res.message || "Booking created!");
-      nav("/bookings");
+      nav(`/checkout/${res.booking._id}`);
     } catch (e2) {
       setErr(e2.message || "Failed to create booking");
     } finally {

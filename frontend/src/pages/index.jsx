@@ -27,7 +27,7 @@ export default function IndexPage() {
   return (
     <main className="container mx-auto bg-white shadow-lg rounded-lg p-8 mt-10 max-w-6xl">
       <h2 className="text-3xl text-red-500 font-bold text-center mb-6">
-        Welcome to airbnb index page
+        Welcome to stayNight index page
       </h2>
 
       <div className="flex flex-wrap justify-center gap-6">

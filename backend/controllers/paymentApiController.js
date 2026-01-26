@@ -34,7 +34,7 @@ exports.getCheckout = async (req, res) => {
   }
 }
 
-exports.getConfirmCheckoutSession = async (req, res) => {
+exports.postConfirmCheckoutSession = async (req, res) => {
   try {
     const userId = req.user._id;
     const bookingId = req.params.bookingId;
@@ -69,7 +69,7 @@ exports.getConfirmCheckoutSession = async (req, res) => {
   }
 } 
 
-exports.getPayLaterCheckoutSession = async (req, res) => {
+exports.postPayLaterCheckoutSession = async (req, res) => {
   try {
     const userId = req.user._id;
     const bookingId = req.params.bookingId;
@@ -87,7 +87,7 @@ exports.getPayLaterCheckoutSession = async (req, res) => {
       return res.status(400).json({ error: "Booking cannot be set to pay later" });
     }
 
-    bookingDoc.status = "pay_later";
+    bookingDoc.status = "pending_payment";
     await bookingDoc.save();
 
     return res.status(200).json({
@@ -125,7 +125,7 @@ exports.deleteCancelCheckoutSession = async (req, res) => {
       return res.status(403).json({ error: "Unauthorized cancellation attempt" });
     }   
     await Booking.deleteOne({ _id: bookingId }).session(session);
-    await User.findByIdAndUpdate(userId, { $pull: { bookings: bookingId } }).session(session);
+    await User.findByIdAndUpdate(userId, { $pull: { booking: bookingId } }).session(session);
 
     await session.commitTransaction();
     session.endSession();

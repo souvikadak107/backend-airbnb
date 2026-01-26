@@ -7,9 +7,9 @@ const auth = require("../../middleware/auth");
 
 paymentApiRouter.get("/checkout/:bookingId", auth, paymentApiController.getCheckout);
 
-paymentApiRouter.get("/checkout/:bookingId/confirm", auth, paymentApiController.getConfirmCheckoutSession);
+paymentApiRouter.post("/checkout/:bookingId/confirm", auth, paymentApiController.postConfirmCheckoutSession);
 
-paymentApiRouter.get("/checkout/:bookingId/paylater", auth, paymentApiController.getPayLaterCheckoutSession);
+paymentApiRouter.post("/checkout/:bookingId/paylater", auth, paymentApiController.postPayLaterCheckoutSession);
 
 paymentApiRouter.delete("/checkout/:bookingId/cancel", auth, paymentApiController.deleteCancelCheckoutSession);
 

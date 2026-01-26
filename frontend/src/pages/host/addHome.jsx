@@ -76,7 +76,7 @@ export default function AddHome() {
     <div className="bg-gray-100 min-h-screen">
       <main className="container mx-auto mt-8 p-8 bg-white rounded-lg shadow-md max-w-3xl">
         <h1 className="text-3xl font-bold mb-6 text-center text-gray-800">
-          Register Your Home on AirBnB
+          Register Your Home on stayNight
         </h1>
 
         {err && (
