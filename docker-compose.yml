@@ -1,0 +1,34 @@
+services:
+  backend:
+    build: ./backend
+    container_name: backend
+    environment:
+      - NODE_OPTIONS=--dns-result-order=ipv4first
+    dns:
+      - 8.8.8.8
+      - 1.1.1.1
+    ports:
+      - "4000:4000"
+    env_file:
+      - ./backend/.env
+    networks:
+      - fullstack_network
+    restart: unless-stopped
+    
+  frontend:
+    build:
+      context: ./frontend
+      args:
+        VITE_API_BASE_URL: http://localhost:4000/api  
+    container_name: frontend
+    ports:
+      - "3000:80"
+    depends_on:
+      - backend
+    networks:
+      - fullstack_network
+    restart: unless-stopped
+
+networks:
+  fullstack_network:
+    driver: bridge
