@@ -31,7 +31,9 @@ const rootDir = require("./utils/pathUtil");
 //CORS Middleware
 const cors = require("cors");
 app.use(cors({
-  origin: ["http://localhost:5173","http://localhost:3000"],
+  origin: ["http://localhost:5173",
+          "http://localhost:3000",
+          "https://backend-staynight.onrender.com"],
   methods: ["GET","POST","PUT","PATCH","DELETE"],
   allowedHeaders: ["Content-Type","Authorization"],
   credentials: true,
