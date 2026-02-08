@@ -9,6 +9,10 @@ const express = require('express');
 const app = express();
 
 
+// For any proxy setup (like Nginx), trust the first proxy
+app.set("trust proxy", 1);
+
+
 //cookie-parser
 const cookieParser = require("cookie-parser");
 app.use(cookieParser());

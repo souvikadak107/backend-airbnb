@@ -17,7 +17,7 @@ export default function NavBar() {
 
   const linkClass = ({ isActive }) =>
     `mr-3 px-3 py-1 rounded text-white transition
-     ${isActive ? "bg-red-700" : "hover:bg-red-600"}`;
+    ${isActive ? "bg-red-700" : "hover:bg-red-600"}`;
 
   return (
     <header className="bg-red-600 px-5 py-3 text-white">

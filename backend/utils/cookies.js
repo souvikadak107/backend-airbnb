@@ -1,9 +1,8 @@
 exports.cookieOptions = () => {
-  const isProd = process.env.NODE_ENV === "production";
   return {
     httpOnly: true,
-    secure: isProd,                  // true only on HTTPS
-    sameSite: isProd ? "none" : "lax",
-    maxAge: 30 * 60 * 1000,          // 5h (match your JWT)
+    secure: true,                  // true only on HTTPS
+    sameSite:"none",
+    maxAge: 30 * 60 * 1000,          // 30 minutes (match your JWT)
   };
 };
