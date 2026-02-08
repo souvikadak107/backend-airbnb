@@ -56,7 +56,7 @@ app.use(express.static(path.join(rootDir, 'public')));
 app.use('/uploads', express.static(path.join(rootDir, 'uploads')));
 
 //health check
-app.get("/health", (req, res) => {
+app.get("/api/health", (req, res) => {
   res.status(200).json({ status: "OK" });
 });
 
