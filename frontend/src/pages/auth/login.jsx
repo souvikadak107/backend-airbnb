@@ -23,8 +23,8 @@ export default function Login() {
         body: { email, password },
       });
 
-      await refresh();                 // ✅ now it’s real
-      navigate("/", { replace: true }); // ✅ replace avoids staying on /login
+      await refresh();                 
+      navigate("/", { replace: true }); 
     } catch (e) {
       setErr(e.message || "Login failed");
     } finally {
