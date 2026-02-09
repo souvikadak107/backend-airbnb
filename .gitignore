@@ -1,0 +1,18 @@
+node_modules
+npm-debug.log
+.DS_Store
+.env
+.vscode
+
+
+Host- 
+{
+    "email":"alice_rest@gmail.com",
+    "password":"Abc@123"
+}
+
+Guest-
+{
+	"email":"testingv5@gmail.com",
+  "password":"Test@1234"
+}
