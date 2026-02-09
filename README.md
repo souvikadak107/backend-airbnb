@@ -1,8 +1,11 @@
-# backend-airbnb
-# 🏡 StayEase-(Node.js + Express + MongoDB)
+🌍 **Live API (Render):** https://backend-staynight.onrender.com
 
-StayEase is a beginner-friendly Airbnb-style web application built with **Node.js**, **Express**, **MongoDB**, **EJS**, and **TailwindCSS**.  
-It allows users to sign up, log in, add homes, edit/delete homes, mark favorites, and browse properties in a clean and responsive UI.
+# StayEase – Backend API
+
+**StayEase Backend** is a RESTful backend service built with **Node.js, Express, and MongoDB (Mongoose)**.  
+It provides authentication, property (home) management, and favorites/wishlist APIs for an Airbnb-style application.
+
+This repository contains **backend code only**.
 
 ---
 
@@ -11,60 +14,56 @@ It allows users to sign up, log in, add homes, edit/delete homes, mark favorites
 ### 🔐 Authentication
 - User Signup / Login (Email + Password)
 - Password hashing using **bcrypt**
-- Session-based authentication using **express-session**
-- Sessions stored securely using **connect-mongodb-session**
+- **JWT-based authentication (stateless)**
+- Protected routes using authentication middleware
+- Input validation using **express-validator**
 
 ### 🏠 Home Management
-- Add new homes/properties
-- Edit existing homes
+- Create new homes/properties
+- Update existing homes
 - Delete homes
-- View all homes on the homepage
+- Fetch all homes
+- Fetch homes by user
 
-###  Favorites / Wishlist
-- Mark homes as favorites
-- Remove favorites anytime
-- Dedicated "My Favorites" page for each user
+### ❤️ Favorites / Wishlist
+- Add homes to favorites
+- Remove homes from favorites
+- Fetch user-specific favorites list
 
-### UI & Views
-- Built with **EJS** template engine
-- Styled using **TailwindCSS**
-- Fully responsive design
+---
 
-###  Deployment
+## 🧠 Architecture Highlights
+- Modular MVC-style structure
+- Separation of controllers, services, routes, and middleware
+- Centralized error handling
+- Environment-based configuration
+- Stateless API design (JWT)
+
+---
+
+## 🚀 Deployment
 - Deployed on **Render**
+- Containerized using **Docker**
 
 ---
 
 ## 🛠️ Tech Stack
 
 | Layer | Technology |
-|-------|------------|
+|------|------------|
 | Runtime | Node.js |
 | Framework | Express.js |
-| Template Engine | EJS |
 | Database | MongoDB + Mongoose |
-| Authentication | express-session + MongoDB store |
-| Styling | TailwindCSS |
-| Deployment | Render |
+| Authentication | JWT |
 | Validation | express-validator |
+| Containerization | Docker |
+| Deployment | Render |
 
 ---
 
-## 📦 Project Structure
- StayEase
-├── public/ # Tailwind output, static files
-├── views/ # EJS templates
-├── routes/ # App routes
-├── controllers/ # Controller logic
-├── models/ # Mongoose schemas
-├── middleware/ # Auth middleware
-├── app.js # Main Express app
-├── tailwind.config.js
-├── package.json
-├── .env
+## 📥 Install Dependencies
 
-## Install Dependecies 
-  npm install
+npm install
 
-## Run 
-  npm start
+## Run Locally 
+npm start
